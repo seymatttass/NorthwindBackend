@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Contants;
+using Core.Utilies.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -9,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
+    //MAGİC STRİNG den uzak durmak gerekli.(Messages.ProductAdded)kurtulduk.
     //işleri yazdığımız yer. yani if leri yazdığımız kısım.
     // iş katmanıda veri erişim katmanını çağırmamız gerek.
     public class ProductManager : IProductService
@@ -19,36 +22,41 @@ namespace Business.Concrete
         {
             _productDal = productDal;
         }
-        public void Add(Product product)
+        public IResults Add(Product product)
         {
             //iş kuralı yazılacak .Örneğin bir eklenen bir daha eklenmesin gibi.
             _productDal.Add(product);
+            return new SuccessResult(Messages.ProductAdded);
         }
 
-        public void Delete(Product product)
+        public IResults Delete(Product product)
         {
             _productDal.Delete(product);
+            return new SuccessResult(Messages.ProductDeleted);
+
         }
 
-        public Product GetById(int productId)
+        public IDataResult<Product> GetById(int productId)
         {
-            return _productDal.Get(filter: p => p.ProductId == productId);
+            return new SuccessDataResult<Product>(_productDal.Get(filter: p => p.ProductId == productId));
 
         }
 
-        public List<Product> GetList()
+        public IDataResult<List<Product>> GetList()
         {
-            return _productDal.GetList().ToList();
+            return new SuccessDataResult<List<Product>>(_productDal.GetList().ToList());
         }
 
-        public List<Product> GetListByCategory(int categoryId)
+        public IDataResult<List<Product>> GetListByCategory(int categoryId)
         {
-            return _productDal.GetList(filter:p=> p.CategoryId == categoryId).ToList();
+            return new SuccessDataResult<List<Product>>(_productDal.GetList(filter:p=> p.CategoryId == categoryId).ToList());
         }
 
-        public void Update(Product product)
+        public IResults Update(Product product)
         {
             _productDal.Update(product);
+            return new SuccessResult(Messages.ProductUptaded);
+
         }
     }
 }

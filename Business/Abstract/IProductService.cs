@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilies.Results;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,12 @@ namespace Business.Abstract
     //parmaetre gönderilebilir.busines repositoryye uygun değildir.
     public interface IProductService
     {
-        Product GetById(int productId);
-        List<Product> GetList();
-        List<Product> GetListByCategory(int categoryId);
+        IDataResult<Product> GetById(int productId);
+        IDataResult<List<Product>> GetList();
+        IDataResult<List<Product>> GetListByCategory(int categoryId);
 
-        void Add(Product product);
-        void Update(Product product);
-        void Delete(Product product);
+        IResults Add(Product product);//ıresult döndürüyoruz başarılımı değil mi veya messaj döndürmüş oluruz.data değil.?
+        IResults Update(Product product);
+        IResults Delete(Product product);
     }
 }
